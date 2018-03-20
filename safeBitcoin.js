@@ -8,7 +8,7 @@ require("./wallet/util.js");
 require("./transaction/util.js");
 
 g_bitcoinlib = require('bitcoinjs-lib');
-config.base=ccsp.config.create("./res/config/base.json");
+config.base=ccsp.config.getFromJson("./res/config/base.json");
 
 // let testAddr=wallet.util.generateKeyPairRandomly();
 // cc.log("\nnew addr is %s\nyour private key is :\n%s",testAddr.address,testAddr.privateKey);
