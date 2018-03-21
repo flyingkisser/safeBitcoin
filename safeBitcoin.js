@@ -25,8 +25,8 @@ config.base=ccsp.config.getFromJson("./res/config/base.json");
 
 var printUsage=function () {
     cc.logNoDate("safeBitcoin usage:\n" +
-        "getaddr memoryWorld\n" +
-        "getaddr_testnet memoryWorld\n" +
+        "getaddr memoryWord\n" +
+        "getaddr_testnet memoryWord\n" +
         "sign_testnet amountInBtc dstAddress privateKey txid [index_of_txid(default 0)]\n"+
             "addrFromKey_testnet privateKey\n"
     );
