@@ -42,7 +42,7 @@ transaction.util={
         // => 0100000001313eb630b128102b60241ca895f1d0ffca21 ...
 
         // You could now push the transaction onto the Bitcoin network manually
-        // (see https://blockchain.info/pushtx)
+        // (see https://testnet.blockchain.info/pushtx)
     },
 
     sign:function (privateKeyWIF,dstAddress,amountInBtc,txID,index) {
@@ -66,8 +66,9 @@ transaction.util={
         // Add the output (who to pay to):
         // [payee's address, amount in satoshis]
         // tx.addOutput("1Gokm82v6DmtwKEB8AiVhm82hyFSsEvBDK", 15000);
-
-        tx.addOutput(dstAddress, amountInBtc*100000000);
+        var satoshis=amountInBtc*100000000;
+        satoshis=Math.floor(satoshis);
+        tx.addOutput(dstAddress,satoshis);
 
         // Initialize a private key using WIF
         // var privateKeyWIF = 'L1uyy5qTuGrVXrmrsvHWHgVzW9kKdrp27wBC7Vs6nZDTF2BRUVwy'
