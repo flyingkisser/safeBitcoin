@@ -25,16 +25,16 @@ config.base=ccsp.config.getFromJson("./res/config/base.json");
 
 var printUsage=function () {
     cc.logNoDate("safeBitcoin usage:\n" +
-        "getaddress memoryWorld\n" +
-        "getaddress_testnet memoryWorld\n" +
+        "getaddr memoryWorld\n" +
+        "getaddr_testnet memoryWorld\n" +
         "sign_testnet amountInBtc dstAddress privateKey txid [index_of_txid(default 0)]\n"+
-            "addressFromKey_testnet privateKey\n"
+            "addrFromKey_testnet privateKey\n"
     );
     process.exit(0);
 };
 
 let action=process.argv[2];
-if(action==="getaddress"){
+if(action==="getaddr"){
     let memoryWorld=process.argv[3];
     if(!memoryWorld){
         printUsage();
@@ -42,7 +42,7 @@ if(action==="getaddress"){
     }
     let info=wallet.util.generateKeyPairFromStr(memoryWorld);
     cc.log("your address is %s,privateKey is %s",info.address,info.privateKey);
-}else if(action==="getaddress_testnet"){
+}else if(action==="getaddr_testnet"){
     let memoryWorld=process.argv[3];
     if(!memoryWorld){
         printUsage();
@@ -70,7 +70,7 @@ if(action==="getaddress"){
         "-----------------------------------------------------",
         wallet.util.privateKey2AddressTesnet(privateKey),dstAddress,amount,txid,index,signHash);
     cc.logNoDate("later,you can post the transaction through https://testnet.blockchain.info/pushtx");
-}else if(action==="addressFromKey_testnet"){
+}else if(action==="addrFromKey_testnet"){
     let privateKey=process.argv[3];
     if(!privateKey){
         printUsage();
