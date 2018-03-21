@@ -24,7 +24,9 @@ transaction.util={
         // [payee's address, amount in satoshis]
         // tx.addOutput("1Gokm82v6DmtwKEB8AiVhm82hyFSsEvBDK", 15000);
 
-        tx.addOutput(dstAddress, amountInBtc*100000000);
+        var satoshis=amountInBtc*100000000;
+        satoshis=Math.floor(satoshis);
+        tx.addOutput(dstAddress,satoshis);
 
         // Initialize a private key using WIF
         // var privateKeyWIF = 'L1uyy5qTuGrVXrmrsvHWHgVzW9kKdrp27wBC7Vs6nZDTF2BRUVwy'

@@ -65,11 +65,11 @@ if(action==="address"){
     let signHash=transaction.util.signTestnet(privateKey,dstAddress,parseFloat(amount),txid,parseInt(index));
     // You could now push the transaction onto the Bitcoin network manually
     // (see https://blockchain.info/pushtx)
-    cc.log("transaction from address %s to %s, amount %f, use txid %s index %d signature data is :\n" +
+    cc.logNoDate("\ntransaction from address %s to %s, amount %f, use txid %s index %d signature data is :\n" +
         "-----------------------------------------------------\n%s\n"+
         "-----------------------------------------------------",
-        wallet.util.privateKey2AddressTesnet(privateKey),dstAddress,amount,txid,index,signHash
-    )
+        wallet.util.privateKey2AddressTesnet(privateKey),dstAddress,amount,txid,index,signHash);
+    cc.logNoDate("later,you can post the transaction through https://testnet.blockchain.info/pushtx");
 }else if(action==="calculate_address_testnet"){
     let privateKey=process.argv[3];
     if(!privateKey){
