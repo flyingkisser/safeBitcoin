@@ -1,9 +1,9 @@
 # safeBitcoin
 safeBitcoin usage:
 
-getaddr memoryWorld
+getaddr memoryWord
 
-getaddr_testnet memoryWorld
+getaddr_testnet memoryWord
 
 sign_testnet amountInBtc dstAddress privateKey txid [index_of_txid(default 0)]
 
