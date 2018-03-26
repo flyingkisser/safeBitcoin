@@ -2,7 +2,7 @@
  * Created by joe on 2017/11/30.
  */
 transaction.util={
-    signTestnet:function (privateKeyWIF,dstAddress,amountInBtc,txID,index) {
+    signTestnet:function (privateKeyWIF,dstAddress,amountInBtc,txID,index,amountTotal,amountFee) {
         var tx = new g_bitcoinlib.TransactionBuilder(g_bitcoinlib.networks.testnet);
 
         if(!privateKeyWIF || !dstAddress || !amountInBtc){
@@ -24,9 +24,16 @@ transaction.util={
         // [payee's address, amount in satoshis]
         // tx.addOutput("1Gokm82v6DmtwKEB8AiVhm82hyFSsEvBDK", 15000);
 
-        var satoshis=amountInBtc*100000000;
-        satoshis=Math.floor(satoshis);
-        tx.addOutput(dstAddress,satoshis);
+        var satoshisSend=amountInBtc*100000000;
+        satoshisSend=Math.floor(satoshisSend);
+        tx.addOutput(dstAddress,satoshisSend);
+
+        var staoshsiChange=(amountTotal-amountFee-amountInBtc)*100000000;
+        if(staoshsiChange>0){
+            staoshsiChange=Math.floor(staoshsiChange);
+            var ecpair=g_bitcoinlib.ECPair.fromWIF(privateKeyWIF,g_bitcoinlib.networks.testnet);
+            tx.addOutput(ecpair.getAddress(),staoshsiChange);
+        }
 
         // Initialize a private key using WIF
         // var privateKeyWIF = 'L1uyy5qTuGrVXrmrsvHWHgVzW9kKdrp27wBC7Vs6nZDTF2BRUVwy'

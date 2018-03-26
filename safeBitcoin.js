@@ -27,7 +27,7 @@ var printUsage=function () {
     cc.logNoDate("safeBitcoin usage:\n" +
         "getaddr memoryWord\n" +
         "getaddr_testnet memoryWord\n" +
-        "sign_testnet amountInBtc dstAddress privateKey txid [index_of_txid(default 0)]\n"+
+        "sign_testnet amountInBtc dstAddress privateKey txid [index_of_txid(default 0)] amountTotal amountFee\n"+
             "addrFromKey_testnet privateKey\n"
     );
     process.exit(0);
@@ -51,24 +51,33 @@ if(action==="getaddr"){
     let info=wallet.util.generateKeyPairFromStrTestnet(memoryWorld);
     cc.log("your testnet address is %s,privateKey is %s",info.address,info.privateKey);
 }else if(action==="sign_testnet"){
-    let amount=process.argv[3];
+    let amountSend=parseFloat(process.argv[3]);
     let dstAddress=process.argv[4];
     let privateKey=process.argv[5];
     let txid=process.argv[6];
-    let index=process.argv[7];
+    let index=parseInt(process.argv[7]);
+    let amountTotal=parseFloat(process.argv[8]);
+    let amountFee=parseFloat(process.argv[9]);
     if(!index)
         index=0;
-    if(!amount || !dstAddress || !privateKey || !txid){
+    if(!amountSend || !dstAddress || !privateKey || !txid || !amountTotal || !amountFee){
         printUsage();
         return;
     }
-    let signHash=transaction.util.signTestnet(privateKey,dstAddress,parseFloat(amount),txid,parseInt(index));
+    if(amountTotal-amountFee-amountSend<0){
+        cc.log("total %f should >= fee %f + send %f",amountTotal,amountFee,amountSend);
+        process.exit(-1);
+    }
+    let signHash=transaction.util.signTestnet(privateKey,dstAddress,amountSend,txid,index,amountTotal,amountFee);
     // You could now push the transaction onto the Bitcoin network manually
     // (see https://blockchain.info/pushtx)
-    cc.logNoDate("\ntransaction from address %s to %s, amount %f, use txid %s index %d signature data is :\n" +
+    cc.logNoDate("\ntransaction from address %s to %s, use txid %s index %d\n" +
+        "send %f,fee %f change %f total %f signature data is :\n" +
         "-----------------------------------------------------\n%s\n"+
         "-----------------------------------------------------",
-        wallet.util.privateKey2AddressTesnet(privateKey),dstAddress,amount,txid,index,signHash);
+        wallet.util.privateKey2AddressTesnet(privateKey),dstAddress,txid,index,
+        amountSend,amountFee,amountTotal-amountFee-amountSend,amountTotal,
+        signHash);
     cc.logNoDate("later,you can post the transaction through https://testnet.blockchain.info/pushtx");
 }else if(action==="addrFromKey_testnet"){
     let privateKey=process.argv[3];
